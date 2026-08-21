@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Appointment | Dr. B Sireesha Rani</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main class="container glass">
+        <header class="header">
+            <div class="branding">
+                <h1>DR. B SIREESHA RANI</h1>
+                <p class="subtitle">Founder, MD – Medcy IVF & Hospitals</p>
+                <p class="desc">Obstetrician, Gynaecologist & Infertility Specialist</p>
+            </div>
+            <div class="info-badges">
+                <span class="badge">20+ Years Experience</span>
+                <span class="badge">5000+ Success Stories</span>
+            </div>
+        </header>
+
+        <section class="booking-section">
+            <h2>Book Your Consultation</h2>
+            <form id="bookingForm">
+                <div class="input-group">
+                    <label for="name">Patient Name</label>
+                    <input type="text" id="name" name="name" placeholder="Enter full name" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" placeholder="Enter phone number" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="date">Select Date</label>
+                    <select id="date" name="date" required>
+                        <option value="" disabled selected>Choose Date</option>
+                        <option value="2026-08-22">Aug 22nd, 2026</option>
+                        <option value="2026-08-23">Aug 23rd, 2026</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Available Time Slots (15 min)</label>
+                    <div id="slotsContainer" class="slots-grid">
+                        <p class="placeholder-text">Please select a date to view available slots.</p>
+                    </div>
+                    <input type="hidden" id="timeSlot" name="timeSlot" required>
+                </div>
+
+                <button type="submit" class="submit-btn" id="submitBtn">Book Appointment Now</button>
+            </form>
+            <div id="message" class="message hidden"></div>
+        </section>
+    </main>
+    <script src="app.js"></script>
+</body>
+</html>
