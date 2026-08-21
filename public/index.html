@@ -1,61 +1,166 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Book Appointment | Dr. B Sireesha Rani</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>Book Appointment | Medcy Ivf</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <!-- SVG Icons inline or font awesome can be added, for now using simple svg data uris in css or span text -->
 </head>
+
 <body>
-    <main class="container glass">
-        <header class="header">
-            <div class="branding">
-                <h1>DR. B SIREESHA RANI</h1>
-                <p class="subtitle">Founder, MD – Medcy IVF & Hospitals</p>
-                <p class="desc">Obstetrician, Gynaecologist & Infertility Specialist</p>
+    <main class="container main-content">
+        <!-- PROFILE HEADER -->
+        <div class="step-card profile-card">
+            <div class="profile-name">DR. B SIREESHA RANI</div>
+            <div class="profile-title">Founder, MD – Medcy IVF & Hospitals</div>
+            <p class="profile-desc">Obstetrician, Gynaecologist & Infertility Specialist</p>
+
+            <div class="profile-badges">
+                <span class="badge-dark">20+ Years Experience</span>
+                <span class="badge-dark">5000+ Success Stories</span>
             </div>
-            <div class="info-badges">
-                <span class="badge">20+ Years Experience</span>
-                <span class="badge">5000+ Success Stories</span>
+
+            <hr class="profile-divider">
+
+            <div class="profile-booking-title">Book Your Consultation</div>
+        </div>
+
+        <!-- Step 1 -->
+        <section class="step-card">
+            <div class="step-header">
+                <div class="step-title-area">
+                    <h2><span class="icon">📅</span> Step 1: Select Consultation Date</h2>
+                    <p>Clinic is open on August 22 and 23 with 15-minute scheduled windows (9:00 AM – 6:00 PM).</p>
+                </div>
+                <div class="step-meta">
+                    <span class="meta-pill">⏱ 36 slots / day • 15 min each</span>
+                </div>
             </div>
-        </header>
 
-        <section class="booking-section">
-            <h2>Book Your Consultation</h2>
-            <form id="bookingForm">
-                <div class="input-group">
-                    <label for="name">Patient Name</label>
-                    <input type="text" id="name" name="name" placeholder="Enter full name" required>
-                </div>
-
-                <div class="input-group">
-                    <label for="phone">Phone Number</label>
-                    <input type="tel" id="phone" name="phone" placeholder="Enter phone number" required>
-                </div>
-
-                <div class="input-group">
-                    <label for="date">Select Date</label>
-                    <select id="date" name="date" required>
-                        <option value="" disabled selected>Choose Date</option>
-                        <option value="2026-08-22">Aug 22nd, 2026</option>
-                        <option value="2026-08-23">Aug 23rd, 2026</option>
-                    </select>
-                </div>
-
-                <div class="input-group">
-                    <label>Available Time Slots (15 min)</label>
-                    <div id="slotsContainer" class="slots-grid">
-                        <p class="placeholder-text">Please select a date to view available slots.</p>
+            <div class="date-cards">
+                <div class="date-card" data-date="2026-08-22">
+                    <div class="date-box">
+                        <span class="month">AUG</span>
+                        <span class="day">22</span>
                     </div>
-                    <input type="hidden" id="timeSlot" name="timeSlot" required>
+                    <div class="date-info">
+                        <h3>Saturday <span class="year">(August 22, 2026)</span></h3>
+                        <p>9:00 AM – 6:00 PM <span class="dot">•</span> <span class="slots-count"
+                                id="count-2026-08-22">...</span></p>
+                    </div>
+                    <div class="radio-circle"></div>
                 </div>
 
-                <button type="submit" class="submit-btn" id="submitBtn">Book Appointment Now</button>
-            </form>
-            <div id="message" class="message hidden"></div>
+                <div class="date-card" data-date="2026-08-23">
+                    <div class="date-box">
+                        <span class="month">AUG</span>
+                        <span class="day">23</span>
+                    </div>
+                    <div class="date-info">
+                        <h3>Sunday <span class="year">(August 23, 2026)</span></h3>
+                        <p>9:00 AM – 6:00 PM <span class="dot">•</span> <span class="slots-count"
+                                id="count-2026-08-23">...</span></p>
+                    </div>
+                    <div class="radio-circle"></div>
+                </div>
+            </div>
         </section>
+
+        <!-- Two Column Layout for Step 2 and Step 3 -->
+        <div class="bottom-grid">
+            <!-- STEP 2 -->
+            <div class="step-card" id="step2">
+                <div class="step-header step-header-split">
+                    <div class="step-title-area">
+                        <h2><span class="step-icon">⏰</span> Step 2: Choose your Time</h2>
+                        <p id="slotsSubtitle">Select a date first to see available times.</p>
+                    </div>
+                    <div class="slots-legend">
+                        <div class="legend-pill free">Free</div>
+                        <div class="legend-pill regular">With Consultation Fee</div>
+                    </div>
+                </div>
+
+                <div class="tabs">
+                    <button class="tab active" data-filter="all">
+                        <span>All</span>
+                        <span class="count">(0)</span>
+                    </button>
+                    <button class="tab" data-filter="morning">
+                        <span>Morning</span>
+                        <span class="count">(0)</span>
+                    </button>
+                    <button class="tab" data-filter="afternoon">
+                        <span>Afternoon</span>
+                        <span class="count">(0)</span>
+                    </button>
+                    <button class="tab" data-filter="evening">
+                        <span>Evening</span>
+                        <span class="count">(0)</span>
+                    </button>
+                </div>
+
+                <div class="slots-grid" id="slotsContainer">
+                    <div class="placeholder-text">Select a date to view slots.</div>
+                </div>
+                </section>
+
+                <!-- Step 3 -->
+                <section class="step-card step3">
+                    <div class="step-header-split">
+                        <h2><span class="icon">👤</span> Step 3: Patient Information & Finalize</h2>
+                        <div class="slot-status-pill" id="selectedSlotPill">No slot chosen yet</div>
+                    </div>
+                    <p class="desc">Fill in patient details to secure your dedicated 15-minute consultation.</p>
+
+                    <div class="warning-banner" id="warningBanner">
+                        <span class="icon">⚠</span>
+                        <div>
+                            <strong>Please select a time slot from Step 2 above.</strong><br>
+                            Slots are open from 9:00 AM to 6:00 PM for August 22 and August 23 (15 minutes each).
+                        </div>
+                    </div>
+
+                    <form id="bookingForm" class="booking-form">
+                        <input type="hidden" id="date" name="date">
+                        <input type="hidden" id="timeSlot" name="timeSlot">
+
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label for="name">FULL PATIENT NAME <span class="req">*</span></label>
+                                <div class="input-with-icon">
+                                    <span class="input-icon">👤</span>
+                                    <input type="text" id="name" name="name" placeholder="" required disabled>
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label for="age">AGE (YEARS) <span class="opt">(OPTIONAL)</span></label>
+                                <input type="number" id="age" name="age" placeholder="e.g. 35" disabled>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="phone">PHONE NUMBER <span class="req">*</span></label>
+                            <div class="input-with-icon">
+                                <span class="input-icon">📞</span>
+                                <input type="tel" id="phone" name="phone" placeholder="e.g. +91 9876543210" required
+                                    disabled>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="submit-btn" id="submitBtn" disabled>Confirm Booking</button>
+                        <div id="message" class="message hidden"></div>
+                    </form>
+                </section>
+            </div>
     </main>
+
     <script src="app.js"></script>
 </body>
+
 </html>

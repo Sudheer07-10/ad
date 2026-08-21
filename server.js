@@ -39,22 +39,35 @@ app.get('/api/slots', async (req, res) => {
         return res.status(400).json({ error: 'Date is required' });
     }
 
+    // Hardcoded booked slots to demonstrate the color coding
+    const dummyBooked = {
+        '2026-08-22': ['09:00', '09:45', '11:15', '13:30', '14:45', '16:00'],
+        '2026-08-23': ['09:15', '10:30', '12:00', '14:15', '15:30', '17:45']
+    };
+
     try {
         const appsScriptUrl = 'https://script.google.com/macros/s/AKfycbyBD8TdMWxsCk0xqlSBSJFWbi-iwB_5qchyKiwELpOKFb1viN9SO6vpi5UN0bor7SGmXQ/exec';
         
         // Fetch booked slots directly from Google Sheets
         const response = await fetch(appsScriptUrl);
-        const bookedSlotsMap = await response.json();
+        const fetchedBookedMap = await response.json();
         
-        const booked = bookedSlotsMap[date] || [];
-        const availableSlots = allSlots.filter(slot => !booked.includes(slot));
+        // Combine fetched booked slots with our dummy booked slots
+        const fetchedBooked = fetchedBookedMap[date] || [];
+        const dummy = dummyBooked[date] || [];
+        const combinedBooked = [...new Set([...fetchedBooked, ...dummy])];
+        
+        const availableSlots = allSlots.filter(slot => !combinedBooked.includes(slot));
         
         res.json({ date, availableSlots });
     } catch (err) {
         console.error('Error fetching from Google Sheets:', err);
-        // Fallback to in-memory if fetch fails (e.g., if Apps script isn't updated yet)
-        const booked = bookedSlotsMap[date] || [];
-        const availableSlots = allSlots.filter(slot => !booked.includes(slot));
+        // Fallback: Combine in-memory and dummy
+        const memoryBooked = bookedSlotsMap[date] || [];
+        const dummy = dummyBooked[date] || [];
+        const combinedBooked = [...new Set([...memoryBooked, ...dummy])];
+        
+        const availableSlots = allSlots.filter(slot => !combinedBooked.includes(slot));
         res.json({ date, availableSlots });
     }
 });
