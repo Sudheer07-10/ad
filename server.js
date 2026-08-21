@@ -27,6 +27,10 @@ function generateAllSlots() {
 
 const allSlots = generateAllSlots();
 
+// In-memory store for booked slots
+// Note: Since Vercel is serverless, this will reset if the server goes to sleep!
+const bookedSlotsMap = {};
+
 // API to get available slots for a specific date
 app.get('/api/slots', (req, res) => {
     const { date } = req.query;
@@ -35,9 +39,10 @@ app.get('/api/slots', (req, res) => {
         return res.status(400).json({ error: 'Date is required' });
     }
 
-    // Since we are no longer using SQLite, just return all slots.
-    // (You can filter them out later if you decide to implement a database again)
-    res.json({ date, availableSlots: allSlots });
+    const booked = bookedSlotsMap[date] || [];
+    const availableSlots = allSlots.filter(slot => !booked.includes(slot));
+    
+    res.json({ date, availableSlots });
 });
 
 // API to book an appointment
@@ -56,6 +61,19 @@ app.post('/api/book', (req, res) => {
     if (!allSlots.includes(timeSlot)) {
         return res.status(400).json({ error: 'Invalid time slot' });
     }
+    
+    // Initialize array for this date if it doesn't exist
+    if (!bookedSlotsMap[date]) {
+        bookedSlotsMap[date] = [];
+    }
+
+    // Check if already booked in memory
+    if (bookedSlotsMap[date].includes(timeSlot)) {
+        return res.status(409).json({ error: 'This time slot is already booked.' });
+    }
+
+    // Mark as booked
+    bookedSlotsMap[date].push(timeSlot);
 
     // Forward data to Google Sheets via Apps Script Web App
     const appsScriptUrl = 'https://script.google.com/macros/s/AKfycbyBD8TdMWxsCk0xqlSBSJFWbi-iwB_5qchyKiwELpOKFb1viN9SO6vpi5UN0bor7SGmXQ/exec';
