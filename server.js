@@ -10,8 +10,9 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Initialize SQLite Database
-const db = new sqlite3.Database('./appointments.db', (err) => {
+// Initialize SQLite Database (use /tmp on Vercel to avoid Read-Only file system errors)
+const dbPath = process.env.VERCEL ? '/tmp/appointments.db' : './appointments.db';
+const db = new sqlite3.Database(dbPath, (err) => {
     if (err) {
         console.error('Error opening database', err.message);
     } else {
@@ -112,6 +113,10 @@ app.post('/api/book', (req, res) => {
     });
 });
 
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
-});
+if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
+    app.listen(PORT, () => {
+        console.log(`Server is running on http://localhost:${PORT}`);
+    });
+}
+
+module.exports = app;
