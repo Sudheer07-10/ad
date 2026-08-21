@@ -32,17 +32,31 @@ const allSlots = generateAllSlots();
 const bookedSlotsMap = {};
 
 // API to get available slots for a specific date
-app.get('/api/slots', (req, res) => {
+app.get('/api/slots', async (req, res) => {
     const { date } = req.query;
     
     if (!date) {
         return res.status(400).json({ error: 'Date is required' });
     }
 
-    const booked = bookedSlotsMap[date] || [];
-    const availableSlots = allSlots.filter(slot => !booked.includes(slot));
-    
-    res.json({ date, availableSlots });
+    try {
+        const appsScriptUrl = 'https://script.google.com/macros/s/AKfycbyBD8TdMWxsCk0xqlSBSJFWbi-iwB_5qchyKiwELpOKFb1viN9SO6vpi5UN0bor7SGmXQ/exec';
+        
+        // Fetch booked slots directly from Google Sheets
+        const response = await fetch(appsScriptUrl);
+        const bookedSlotsMap = await response.json();
+        
+        const booked = bookedSlotsMap[date] || [];
+        const availableSlots = allSlots.filter(slot => !booked.includes(slot));
+        
+        res.json({ date, availableSlots });
+    } catch (err) {
+        console.error('Error fetching from Google Sheets:', err);
+        // Fallback to in-memory if fetch fails (e.g., if Apps script isn't updated yet)
+        const booked = bookedSlotsMap[date] || [];
+        const availableSlots = allSlots.filter(slot => !booked.includes(slot));
+        res.json({ date, availableSlots });
+    }
 });
 
 // API to book an appointment
